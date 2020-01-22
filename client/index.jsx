@@ -1,16 +1,73 @@
+/* eslint-disable import/extensions, class-methods-use-this */
+
 import React, { Component } from 'react';
 import { render } from 'react-dom';
+
+import Login from './components/login.jsx';
+import Portfolio from './components/portfolio.jsx';
+import Feed from './components/feed.jsx';
 
 class App extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      // user portfolio information
+      // price feed data points
+      feed: [],
+    };
+    this.getPriceFeed = this.getPriceFeed.bind(this);
+    this.login = this.login.bind(this);
   }
 
+  // portfolio should only populate (i.e. update state) when user is authenticated
+  
+  
+  getPriceFeed(e) {
+    e.preventDefault();
+    
+    fetch('/api/test')
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        this.setState({ feed: data });
+      })
+      .catch((err) => console.log(err));
+  }
+
+  login(e) {
+    e.preventDefault();
+    // gets current value in username and password fields
+    // sends to server
+    // server encrypts and matches against user profiles db
+
+    const credentials = {
+      username: 'testuser',
+      password: 'testpass',
+    };
+
+    fetch('/api/auth', {
+      method: 'post',
+      body: JSON.stringify(credentials),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => {
+        console.log('auth request res: ', res);
+      })
+      .catch((err) => console.log(err));
+
+    // this.setState({});
+  }
+
+
   render() {
+    const { feed } = this.state;
     return (
       <div>
-        <h1>Hello world from bundled react!!</h1>
+        <Login login={this.login} />
+        <Portfolio />
+        <Feed getPriceFeed={this.getPriceFeed} feed={feed} />
       </div>
     );
   }

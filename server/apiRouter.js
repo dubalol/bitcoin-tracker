@@ -4,8 +4,6 @@ const router = express.Router();
 
 const db = require('../db/index');
 
-// for testing purposes
-const response = { success: 'Heres your response' };
 
 const getPriceFeed = `
   SELECT *
@@ -22,8 +20,9 @@ router.use('/test', (req, res) => {
 
 // Serve this page upon successful login
 // Middleware chain should authenticate user
-router.use('/auth', (req, res) => {
+router.post('/auth', (req, res) => {
   console.log('hello from auth route handler');
+  console.log('body of auth request: ', req.body);
   return res.send('User is authorized');
 });
 
