@@ -22,7 +22,7 @@ authController.verifyNewUserDoesNotExist = (req, res, next) => {
       return next();
     }
     // short circuit middleware if user already exists
-    res.send('Username already exists!');
+    res.send({ msg: 'Username already exists!' });
   });
 };
 

@@ -8,7 +8,7 @@ class Login extends Component {
   }
 
   render() {
-    const { login, register } = this.props;
+    const { login, register, errorMsg } = this.props;
     return (
       <div>
         <form>
@@ -18,6 +18,7 @@ class Login extends Component {
           <input type="button" id="register" value="Register" onClick={register} />
           <input type="button" id="github" value="Log In With Github" />
         </form>
+        <h5>{errorMsg}</h5>
       </div>
     );
   }

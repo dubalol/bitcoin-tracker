@@ -7,9 +7,16 @@ class Portfolio extends Component {
   }
 
   render() {
+    const { portfolio } = this.props;
+    const portfolioList = [];
+    Object.keys(portfolio).forEach((bal) => {
+      const currency = bal.substring(0, 3).toUpperCase();
+      portfolioList.push(<p key={currency}>{`Your ${currency} balance: ${portfolio[bal]}`}</p>);
+    });
     return (
       <div>
         Hello World from Portfolio
+        {portfolioList}
       </div>
     );
   }

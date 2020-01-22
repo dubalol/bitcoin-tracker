@@ -14,9 +14,12 @@ class App extends Component {
       // user portfolio information
       // price feed data points
       feed: [],
+      errorMsg: '',
+      portfolio: {},
     };
     this.getPriceFeed = this.getPriceFeed.bind(this);
     this.login = this.login.bind(this);
+    this.register = this.register.bind(this);
   }
 
   // portfolio should only populate (i.e. update state) when user is authenticated
@@ -72,8 +75,16 @@ class App extends Component {
         'Content-Type': 'application/json',
       },
     })
-      .then((res) => {
-        console.log('auth register res: ', res);
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.msg) this.setState({ errorMsg: data.msg });
+        if (data.portfolio) {
+          this.setState({ 
+            portfolio: data.portfolio,
+            errorMsg: '',
+          });
+        }
+        return data;
       })
       .catch((err) => console.log(err));
 
@@ -81,11 +92,11 @@ class App extends Component {
   }
 
   render() {
-    const { feed } = this.state;
+    const { feed, errorMsg, portfolio } = this.state;
     return (
       <div>
-        <Login login={this.login} register={this.register} />
-        <Portfolio />
+        <Login login={this.login} register={this.register} errorMsg={errorMsg} />
+        <Portfolio portfolio={portfolio} />
         <Feed getPriceFeed={this.getPriceFeed} feed={feed} />
       </div>
     );

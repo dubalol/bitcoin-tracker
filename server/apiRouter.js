@@ -43,8 +43,8 @@ router.post('/authRegister',
   (req, res) => {
     console.log('hello from register final callback');
     // console.log('body of register request: ', req.body);
-    console.log('user portfolio: ', res.locals.portfolio);
-    return res.send('User is registered');
+    console.log('user portfolio: ', res.locals.portfolio[0]);
+    return res.send({ portfolio: res.locals.portfolio[0] });
   });
 
 module.exports = router;
