@@ -19,11 +19,21 @@ window.addEventListener('DOMContentLoaded', (e) => {
 
     // const price = await fetch('http://localhost:8080/api/test');
     // console.log(price);
-    fetch('http://localhost:8080/api/test')
+    fetch('/api/test')
       .then((res) => res.json())
-      .then((data) => console.log(data))
+      .then((data) => {
+        console.log(data);
+        data.forEach((el) => {
+          const newPricePoint = document.createElement('li');
+          const textNode = document.createTextNode(`${el.datetime}: ${el.price}`);
+          newPricePoint.appendChild(textNode);
+          document.querySelector('ul').prepend(newPricePoint);
+        });
+      })
       .catch((err) => console.log(err));
-
   });
 
+  const poweredBy = document.createElement('h5');
+  poweredBy.innerHTML = 'Powered by Coinbase';
+  body.appendChild(poweredBy);
 });

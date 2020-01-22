@@ -12,7 +12,15 @@ const PORT = 3000;
 // API route
 app.use('/api', apiRouter);
 
-// To eventually serve up bundle
+// Upon successful login
+// Middleware chain should authenticate user
+app.get('/client/index.html', (req, res) => {
+  const mainView = path.resolve(__dirname, '../client/index.html');
+  res.sendFile(mainView);
+
+});
+
+// To eventually serve up bundle IN PRODUCTION MODE
 app.get('/build/bundle.js', (req, res) => {
   const bundle = path.resolve(__dirname, '../client/index.js');
   res.sendFile(bundle);

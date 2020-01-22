@@ -15,9 +15,8 @@ const getPriceFeed = `
 router.use('/test', (req, res) => {
   db.query(getPriceFeed, [], (err, prices) => {
     if (err) console.log(err);
-    else console.log(prices.rows);
+    res.json(prices.rows);
   });
-  // res.json(response);
 });
 
 module.exports = router;

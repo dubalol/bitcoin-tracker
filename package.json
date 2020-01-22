@@ -4,7 +4,7 @@
   "description": "Practice trading Bitcoin with a virtual portfolio",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=production node server/server.js",
+    "start": "NODE_ENV=production nodemon server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "NODE_ENV=development webpack-dev-server --open & NODE_ENV=development nodemon server/server.js"
   },
