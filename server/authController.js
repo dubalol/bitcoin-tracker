@@ -6,6 +6,46 @@ const saltRounds = 5; // recommended 12+ for production
 
 const authController = {};
 
+// Existing User Login Middleware
+authController.verifyExistingUserExists = (req, res, next) => {
+  const { username } = req.body;
+  console.log('from login verify middleware: ', username);
+  const checkUserSQL = `
+    SELECT COUNT(*)
+    FROM users
+    WHERE username=$1
+  `;
+  db.query(checkUserSQL, [username], (err, sqlRes) => {
+    if (err) return next(err);
+    if (sqlRes.rows[0].count === '0') {
+      console.log('user probably does not exist');
+      return res.send({ msg: 'Invalid username or password-user' });
+    }
+    // if no error and count > 0, username should exist
+    return next();
+  });
+};
+
+authController.compareHash = (req, res, next) => {
+  const { username, password } = req.body;
+  console.log('from hash compare middleware');
+  const getHashSQL = `
+    SELECT hashed_pw
+    FROM users
+    WHERE username=$1
+  `;
+  db.query(getHashSQL, [username], (errSQL, sqlRes) => {
+    if (errSQL) return next(errSQL);
+    const hash = sqlRes.rows[0].hashed_pw;
+    bcrypt.compare(password, hash, (errBC, result) => {
+      if (errBC) return next(errBC);
+      if (result) return next();
+      return res.send({ msg: 'Invalid username or password-hash' });
+    });
+  });
+};
+
+// New User Registration Middleware
 authController.verifyNewUserDoesNotExist = (req, res, next) => {
   const { username } = req.body;
   console.log('username from middleware: ', username);
@@ -22,7 +62,7 @@ authController.verifyNewUserDoesNotExist = (req, res, next) => {
       return next();
     }
     // short circuit middleware if user already exists
-    res.send({ msg: 'Username already exists!' });
+    return res.send({ msg: 'Username already exists!' });
   });
 };
 

@@ -17,6 +17,7 @@ class Login extends Component {
           <input type="submit" id="login" value="Log In" onClick={login} />
           <input type="button" id="register" value="Register" onClick={register} />
           <input type="button" id="github" value="Log In With Github" />
+          <input type="button" id="forgot" value="Forgot?" />
         </form>
         <h5>{errorMsg}</h5>
       </div>

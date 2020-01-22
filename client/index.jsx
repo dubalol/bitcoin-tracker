@@ -52,8 +52,16 @@ class App extends Component {
         'Content-Type': 'application/json',
       },
     })
-      .then((res) => {
-        console.log('auth login res: ', res);
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.msg) this.setState({ errorMsg: data.msg });
+        if (data.portfolio) {
+          this.setState({
+            portfolio: data.portfolio,
+            errorMsg: '',
+          });
+        }
+        return data;
       })
       .catch((err) => console.log(err));
 
@@ -79,7 +87,7 @@ class App extends Component {
       .then((data) => {
         if (data.msg) this.setState({ errorMsg: data.msg });
         if (data.portfolio) {
-          this.setState({ 
+          this.setState({
             portfolio: data.portfolio,
             errorMsg: '',
           });

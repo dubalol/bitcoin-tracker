@@ -25,11 +25,15 @@ router.use('/test', (req, res) => {
 // (1a) get user salt and hash from db
 // (1b) compare hashes and send response (portfolio information to populate state)
 // (2) else prompt user to register
-router.post('/authLogin', (req, res) => {
-  console.log('hello from login route handler');
-  console.log('body of login request: ', req.body);
-  return res.send('User is authorized');
-});
+router.post('/authLogin',
+  authController.verifyExistingUserExists,
+  authController.compareHash,
+  authController.getPortfolio,
+  (req, res) => {
+    console.log('hello from login final callback');
+    // console.log('body of login request: ', req.body);
+    return res.send({ portfolio: res.locals.portfolio[0] });
+  });
 
 // (1) confirm user does not already exist in database, otherwise prompt user
 // (2) generate salt, hash password, and store record in db
@@ -43,7 +47,7 @@ router.post('/authRegister',
   (req, res) => {
     console.log('hello from register final callback');
     // console.log('body of register request: ', req.body);
-    console.log('user portfolio: ', res.locals.portfolio[0]);
+    // console.log('user portfolio: ', res.locals.portfolio[0]);
     return res.send({ portfolio: res.locals.portfolio[0] });
   });
 
