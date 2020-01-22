@@ -36,6 +36,10 @@ app.use('/', (req, res) => {
   return res.sendFile(html);
 });
 
+app.use((err, req, res, next) => {
+  console.log('GLOBAL ERROR HANDLER REACHED: ', err);
+});
+
 
 // This will eventually go into a setInterval while server is running
 // This will then eventually be replaced with a websocket feed

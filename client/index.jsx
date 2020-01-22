@@ -36,16 +36,13 @@ class App extends Component {
 
   login(e) {
     e.preventDefault();
-    // gets current value in username and password fields
-    // sends to server
-    // server encrypts and matches against user profiles db
 
     const credentials = {
-      username: 'testuser',
-      password: 'testpass',
+      username: document.querySelector('#username').value,
+      password: document.querySelector('#password').value,
     };
 
-    fetch('/api/auth', {
+    fetch('/api/authLogin', {
       method: 'post',
       body: JSON.stringify(credentials),
       headers: {
@@ -53,19 +50,41 @@ class App extends Component {
       },
     })
       .then((res) => {
-        console.log('auth request res: ', res);
+        console.log('auth login res: ', res);
       })
       .catch((err) => console.log(err));
 
     // this.setState({});
   }
 
+  register(e) {
+    e.preventDefault();
+
+    const credentials = {
+      username: document.querySelector('#username').value,
+      password: document.querySelector('#password').value,
+    };
+
+    fetch('/api/authRegister', {
+      method: 'post',
+      body: JSON.stringify(credentials),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => {
+        console.log('auth register res: ', res);
+      })
+      .catch((err) => console.log(err));
+
+    // this.setState({});
+  }
 
   render() {
     const { feed } = this.state;
     return (
       <div>
-        <Login login={this.login} />
+        <Login login={this.login} register={this.register} />
         <Portfolio />
         <Feed getPriceFeed={this.getPriceFeed} feed={feed} />
       </div>
@@ -74,57 +93,3 @@ class App extends Component {
 }
 
 render(<App />, document.querySelector('#rootMain'));
-
-// window.addEventListener('DOMContentLoaded', (e) => {
-//   e.preventDefault();
-//   const body = document.querySelector('body');
-
-//   const login = document.getElementById('login');
-//   login.addEventListener('click', async (ev) => {
-//     ev.preventDefault();
-//     console.log('hello from login button');
-//     const userAuth = await fetch('/api/auth')
-//       .then((res) => res.text())
-//       .then((authResponse) => authResponse)
-//       .catch((err) => console.log(err));
-//     console.log(userAuth);
-//     // on successful login, remove log in elements and show portfolio
-//   });
-
-
-
-//   const newDiv = document.createElement('div');
-//   newDiv.innerHTML = 'Hi from bundled index.js';
-//   body.appendChild(newDiv);
-
-//   const newButton = document.createElement('button');
-//   newButton.innerHTML = 'Click me';
-//   body.appendChild(newButton);
-
-//   const priceList = document.createElement('ul');
-//   body.appendChild(priceList);
-
-
-//   newButton.addEventListener('click', async (e) => {
-//     e.preventDefault();
-
-//     // const price = await fetch('http://localhost:8080/api/test');
-//     // console.log(price);
-//     fetch('/api/test')
-//       .then((res) => res.json())
-//       .then((data) => {
-//         console.log(data);
-//         data.forEach((el) => {
-//           const newPricePoint = document.createElement('li');
-//           const textNode = document.createTextNode(`${el.datetime}: ${el.price}`);
-//           newPricePoint.appendChild(textNode);
-//           document.querySelector('ul').prepend(newPricePoint);
-//         });
-//       })
-//       .catch((err) => console.log(err));
-//   });
-
-//   const poweredBy = document.createElement('h5');
-//   poweredBy.innerHTML = 'Powered by Coinbase';
-//   body.appendChild(poweredBy);
-// });
