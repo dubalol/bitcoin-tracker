@@ -6,8 +6,18 @@ const db = require('../db/index');
 
 // for testing purposes
 const response = { success: 'Heres your response' };
+
+const getPriceFeed = `
+  SELECT *
+  FROM prices
+`;
+
 router.use('/test', (req, res) => {
-  res.json(response);
+  db.query(getPriceFeed, [], (err, prices) => {
+    if (err) console.log(err);
+    else console.log(prices.rows);
+  });
+  // res.json(response);
 });
 
 module.exports = router;
