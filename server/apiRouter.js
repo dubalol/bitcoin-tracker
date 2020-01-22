@@ -13,10 +13,18 @@ const getPriceFeed = `
 `;
 
 router.use('/test', (req, res) => {
+  console.log('hello from api router');
   db.query(getPriceFeed, [], (err, prices) => {
     if (err) console.log(err);
-    res.json(prices.rows);
+    return res.json(prices.rows);
   });
+});
+
+// Serve this page upon successful login
+// Middleware chain should authenticate user
+router.use('/auth', (req, res) => {
+  console.log('hello from auth route handler');
+  return res.send('User is authorized');
 });
 
 module.exports = router;

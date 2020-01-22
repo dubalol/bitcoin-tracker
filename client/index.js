@@ -2,6 +2,20 @@ window.addEventListener('DOMContentLoaded', (e) => {
   e.preventDefault();
   const body = document.querySelector('body');
 
+  const login = document.getElementById('login');
+  login.addEventListener('click', async (ev) => {
+    ev.preventDefault();
+    console.log('hello from login button');
+    const userAuth = await fetch('/api/auth')
+      .then((res) => res.text())
+      .then((authResponse) => authResponse)
+      .catch((err) => console.log(err));
+    console.log(userAuth);
+    // on successful login, remove log in elements and show portfolio
+  });
+
+
+
   const newDiv = document.createElement('div');
   newDiv.innerHTML = 'Hi from bundled index.js';
   body.appendChild(newDiv);

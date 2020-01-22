@@ -8,29 +8,30 @@ const app = express();
 
 const PORT = 3000;
 
+// Test this
+// app.use(express.static(path.resolve(__dirname, '/public')));
 
 // API route
 app.use('/api', apiRouter);
 
-// Upon successful login
-// Middleware chain should authenticate user
-app.get('/client/index.html', (req, res) => {
-  const mainView = path.resolve(__dirname, '../client/index.html');
-  res.sendFile(mainView);
-
-});
-
-// To eventually serve up bundle IN PRODUCTION MODE
+// Serves up bundle IN PRODUCTION MODE
 app.get('/build/bundle.js', (req, res) => {
-  const bundle = path.resolve(__dirname, '../client/index.js');
-  res.sendFile(bundle);
+  console.log('hello from /build/bundle route handler');
+  const bundle = path.resolve(__dirname, '../build/bundle.js');
+  return res.sendFile(bundle);
 });
 
-// Initial HTML file
+// Serve index.js in root, to facilitate auth/login
+app.get('/index.js', (req, res) => {
+  const loginPage = path.resolve(__dirname, '../index.js');
+  return res.sendFile(loginPage);
+});
+
+// Initial HTML file, log in page
 app.use('/', (req, res) => {
   // res.send('Hello World');
   const html = path.resolve(__dirname, '../index.html');
-  res.sendFile(html);
+  return res.sendFile(html);
 });
 
 
