@@ -4,8 +4,9 @@
   "description": "Practice trading Bitcoin with a virtual portfolio",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "NODE_ENV=production node server/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "NODE_ENV=development webpack-dev-server --open & NODE_ENV=development nodemon server/server.js"
   },
   "repository": {
     "type": "git",
@@ -26,5 +27,10 @@
     "nodemon": "^2.0.2",
     "path": "^0.12.7",
     "pg": "^7.17.1"
+  },
+  "devDependencies": {
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1"
   }
 }
