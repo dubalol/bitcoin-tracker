@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const db = require('../db/index');
 
 const tradeController = {};

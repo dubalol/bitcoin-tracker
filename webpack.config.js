@@ -34,4 +34,9 @@ module.exports = {
     },
   },
   mode: process.env.NODE_ENV,
+  performance: {
+    hints: false,
+    maxEntrypointSize: 512000,
+    maxAssetSize: 1024000,
+  },
 };

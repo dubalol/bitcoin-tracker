@@ -3,7 +3,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const WebSocket = require('ws');
 
-const receiver = require('./receiver');
+// const receiver = require('./receiver');
 const apiRouter = require('./apiRouter');
 
 const app = express();

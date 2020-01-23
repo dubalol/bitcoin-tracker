@@ -42,6 +42,7 @@ authController.compareHash = (req, res, next) => {
       if (result) return next();
       return res.send({ msg: 'Invalid username or password-hash' });
     });
+    // return here to prevent hanging contenxt?
   });
 };
 
