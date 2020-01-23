@@ -29,7 +29,7 @@ module.exports = {
     // publicPath represents a part of the address to the bundle held in memory
     publicPath: '/build/',
     proxy: {
-      // every request that starts with KEY gets routed to 3000
+      // EVERY request that starts with 'KEY' gets routed to 3000, can be just '/' as well
       '/api': 'http://localhost:3000',
     },
   },
