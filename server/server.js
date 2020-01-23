@@ -10,33 +10,6 @@ const app = express();
 
 const PORT = 3000;
 
-const ws = new WebSocket('wss://ws-feed.pro.coinbase.com');
-
-// ws.on('open', () => {
-
-//   const subscription = {
-//     type: 'subscribe',
-//     product_ids: [
-//       'BTC-USD',
-//     ],
-//     channels: [
-//       {
-//         name: 'ticker',
-//         product_ids: [
-//           'BTC-USD',
-//         ],
-//       },
-//     ],
-//   };
-//   ws.send(JSON.stringify(subscription));
-// });
-
-// ws.on('message', (msg) => {
-//   console.log(msg);
-// });
-
-console.log('THE WEBSOCKET IS', ws);
-
 // Test this
 // app.use(express.static(path.resolve(__dirname, '/public')));
 app.use(bodyParser.json());
@@ -71,9 +44,31 @@ app.use((err, req, res, next) => {
 
 // This will eventually go into a setInterval while server is running
 // This will then eventually be replaced with a websocket feed
-setInterval(() => {
-  receiver.getPrices();
-}, 10000);
+// setInterval(() => {
+//   receiver.getPrices();
+// }, 10000);
 
 // have app listen to port
-app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+const server = app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+
+const wss = new WebSocket.Server({ server });
+// console.log(wss);
+// const ws = new WebSocket('ws://localhost:3000');
+
+wss.on('connection', (ws) => {
+  ws.on('message', (msg) => {
+    console.log('SERVER GOT MSG: ', msg);
+    ws.send('HELLO FROM SERVER');
+  });
+  // console.log('FROM WSS', msg);
+});
+
+// console.log('THE WEBSOCKET IS', wss);
+
+// wss.on('connection', (ws) => {
+//   // ws.on('message', (message) => {
+//   //   console.log('received: %s', message);
+//   // });
+
+//   ws.send('something');
+// });

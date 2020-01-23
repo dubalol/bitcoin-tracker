@@ -52,38 +52,49 @@ class App extends Component {
     //     })
     //     .catch((err) => console.log(err));
     // }, 4000);
-    const ws = new WebSocket('wss://ws-feed.pro.coinbase.com');
-    ws.onopen = () => {
-      const subscription = {
-        type: 'subscribe',
-        product_ids: [
-          'BTC-USD',
-        ],
-        channels: [
-          {
-            name: 'ticker',
-            product_ids: [
-              'BTC-USD',
-            ],
-          },
-        ],
-      };
-      ws.send(JSON.stringify(subscription));
+    const ws2 = new WebSocket('ws://localhost:3000');
+    ws2.onopen = () => {
+      console.log('ws2 opened');
+      ws2.send('hello world');
+    };
+    ws2.onmessage = (msg) => {
+      console.log('from client: ', msg);
     };
 
-    ws.onmessage = (msg) => {
-      const parsedData = JSON.parse(msg.data);
-      console.log(parsedData.price);
-      console.log(parsedData.time);
-      const { ticker } = this.state;
-      this.setState({
-        priorTicker: ticker,
-        ticker: parsedData.price,
-        datetime: parsedData.time,
-      });
-    };
 
-    setTimeout(() => ws.close(), 1000);
+    // const ws = new WebSocket('wss://ws-feed.pro.coinbase.com');
+    // console.log(ws);
+    // ws.onopen = () => {
+    //   const subscription = {
+    //     type: 'subscribe',
+    //     product_ids: [
+    //       'BTC-USD',
+    //     ],
+    //     channels: [
+    //       {
+    //         name: 'ticker',
+    //         product_ids: [
+    //           'BTC-USD',
+    //         ],
+    //       },
+    //     ],
+    //   };
+    //   ws.send(JSON.stringify(subscription));
+    // };
+
+    // ws.onmessage = (msg) => {
+    //   const parsedData = JSON.parse(msg.data);
+    //   console.log(parsedData.price);
+    //   console.log(parsedData.time);
+    //   const { ticker } = this.state;
+    //   this.setState({
+    //     priorTicker: ticker,
+    //     ticker: parsedData.price,
+    //     datetime: parsedData.time,
+    //   });
+    // };
+
+    // setTimeout(() => ws.close(), 30000);
   }
 
   getPriceFeed(e) {

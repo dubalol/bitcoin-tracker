@@ -34,12 +34,14 @@ class Feed extends Component {
     const deltaImg = delta > 0 ? '/client/assets/green.png' : '/client/assets/red.png';
     const formattedTicker = Number(ticker).toFixed(2);
     // console.log(typeof ticker);
+    const time = new Moment(datetime);
 
     return (
       <div id="feedDiv">
         {/* {ticker} */}
         <div>
-          <span>{`${formattedTicker} ${deltaSign}`}</span>
+          <span>{`${time.format('h:mm:ss A')}`}</span>
+          <span>{`${formattedTicker}`}</span>
           <img src={deltaImg} alt="hello" />
         </div>
         <input className="inputbutton" id="getprices" type="submit" onClick={getPriceFeed} value="Get Price History" />

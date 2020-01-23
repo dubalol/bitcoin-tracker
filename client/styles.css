@@ -28,7 +28,7 @@ img {
 #feedDiv div {
   /* width: 100%; */
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 }
 
@@ -40,6 +40,7 @@ img {
 input {
   border-radius: 3px;
   border: 1px solid white;
+  box-shadow: 1px 1px 2px;
 }
 
 .inputButton {
