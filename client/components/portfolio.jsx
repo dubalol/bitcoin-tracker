@@ -31,7 +31,6 @@ class Portfolio extends Component {
     }
     return (
       <div>
-        Hello World from Portfolio
         {portfolioComponents}
       </div>
     );

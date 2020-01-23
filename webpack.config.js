@@ -16,12 +16,20 @@ module.exports = {
           presets: ['@babel/preset-env', '@babel/preset-react'],
         },
       },
+      {
+        test: /\.css$/,
+        exclude: /node_modules/,
+        // css-loader converts css file to parsable string
+        // style-loader loads into style tag in HTML
+        use: ['style-loader', 'css-loader'],
+      },
     ],
   },
   devServer: {
     // publicPath represents a part of the address to the bundle held in memory
     publicPath: '/build/',
     proxy: {
+      // every request that starts with KEY gets routed to 3000
       '/api': 'http://localhost:3000',
     },
   },

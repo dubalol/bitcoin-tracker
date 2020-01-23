@@ -15,7 +15,7 @@ const getPriceFeed = `
 `;
 
 // CURRENT PRICE FEED END POINT
-router.use('/test', (req, res) => {
+router.use('/prices', (req, res) => {
   console.log('hello from api router');
   db.query(getPriceFeed, [], (err, prices) => {
     if (err) console.log(err);

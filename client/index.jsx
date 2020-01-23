@@ -8,6 +8,8 @@ import Login from './components/login.jsx';
 import Portfolio from './components/portfolio.jsx';
 import Feed from './components/feed.jsx';
 
+import styles from './styles.css';
+
 class App extends Component {
   constructor() {
     super();
@@ -29,7 +31,7 @@ class App extends Component {
   getPriceFeed(e) {
     e.preventDefault();
 
-    fetch('/api/test')
+    fetch('/api/prices')
       .then((res) => res.json())
       .then((data) => {
         console.log(data);

@@ -1,0 +1,11 @@
+body {
+  /* background-color: #ffffff; */
+  background-color: #3052F0;
+  color: #ffffff;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+}
