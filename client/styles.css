@@ -23,6 +23,8 @@ img {
 #portfolioDiv {
   width: 100%;
   border: 1px solid white;
+  border-radius: 3px;
+  box-shadow: 1px 1px 2px;
 }
 
 #feedDiv div {

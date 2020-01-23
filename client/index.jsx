@@ -52,15 +52,23 @@ class App extends Component {
     //     })
     //     .catch((err) => console.log(err));
     // }, 4000);
+
+    // CONNECTION TO WEBSOCKET SERVER
     const ws2 = new WebSocket('ws://localhost:3000');
     ws2.onopen = () => {
       console.log('ws2 opened');
       ws2.send('hello world');
     };
     ws2.onmessage = (msg) => {
-      console.log('from client: ', msg);
+      console.log('from client: ', JSON.parse(msg.data));
+      const { ticker } = this.state;
+      const { price, time } = JSON.parse(msg.data);
+      this.setState({
+        priorTicker: ticker,
+        ticker: price,
+        datetime: time,
+      });
     };
-
 
     // const ws = new WebSocket('wss://ws-feed.pro.coinbase.com');
     // console.log(ws);

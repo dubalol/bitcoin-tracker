@@ -52,23 +52,44 @@ app.use((err, req, res, next) => {
 const server = app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 
 const wss = new WebSocket.Server({ server });
-// console.log(wss);
-// const ws = new WebSocket('ws://localhost:3000');
+
+// THIS NEEDS TO HAPPEN before client opens a connection
+const wsCB = new WebSocket('wss://ws-feed.pro.coinbase.com');
+wsCB.onopen = () => {
+  const subscription = {
+    type: 'subscribe',
+    product_ids: [
+      'BTC-USD',
+    ],
+    channels: [
+      {
+        name: 'ticker',
+        product_ids: [
+          'BTC-USD',
+        ],
+      },
+    ],
+  };
+  wsCB.send(JSON.stringify(subscription));
+};
 
 wss.on('connection', (ws) => {
   ws.on('message', (msg) => {
     console.log('SERVER GOT MSG: ', msg);
-    ws.send('HELLO FROM SERVER');
+    // ws.send('HELLO FROM SERVER');
   });
-  // console.log('FROM WSS', msg);
+
+  // begin sending price feed stream once a node is connection
+  wsCB.onmessage = (msgCB) => {
+    // console.log(msgCB);
+    const parsedData = JSON.parse(msgCB.data);
+    const { price, time } = parsedData;
+    ws.send(JSON.stringify({
+      price,
+      time,
+    }));
+  };
 });
 
-// console.log('THE WEBSOCKET IS', wss);
 
-// wss.on('connection', (ws) => {
-//   // ws.on('message', (message) => {
-//   //   console.log('received: %s', message);
-//   // });
-
-//   ws.send('something');
-// });
+setTimeout(() => wsCB.close(), 20000);

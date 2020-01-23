@@ -30,7 +30,7 @@ class Feed extends Component {
     });
 
     const delta = ticker - priorTicker;
-    const deltaSign = delta > 0 ? '+' : '-';
+    // const deltaSign = delta > 0 ? '+' : '-';
     const deltaImg = delta > 0 ? '/client/assets/green.png' : '/client/assets/red.png';
     const formattedTicker = Number(ticker).toFixed(2);
     // console.log(typeof ticker);
@@ -38,7 +38,7 @@ class Feed extends Component {
 
     return (
       <div id="feedDiv">
-        {/* {ticker} */}
+        <p>Current Price</p>
         <div>
           <span>{`${time.format('h:mm:ss A')}`}</span>
           <span>{`${formattedTicker}`}</span>
