@@ -43,7 +43,9 @@ app.use((err, req, res, next) => {
 
 // This will eventually go into a setInterval while server is running
 // This will then eventually be replaced with a websocket feed
-// receiver.getPrices();
+setInterval(() => {
+  receiver.getPrices();
+}, 10000);
 
 // have app listen to port
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));

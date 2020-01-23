@@ -23,5 +23,18 @@ const usersTableSQL = `
     )
 `;
 
+const tradesTableSQL = `
+      CREATE TABLE trades (
+        _id serial PRIMARY KEY,
+        traded_at TIMESTAMP NOT NULL,
+        username VARCHAR NOT NULL,
+        pair VARCHAR NOT NULL,
+        rate VARCHAR NOT NULL,
+        amount VARCHAR NOT NULL,
+        txn_type VARCHAR NOT NULL
+      )
+`;
+
 // db.query(priceTableSQL);
-db.query(usersTableSQL);
+// db.query(usersTableSQL);
+// db.query(tradesTableSQL);

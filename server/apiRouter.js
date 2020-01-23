@@ -4,13 +4,17 @@ const router = express.Router();
 
 const db = require('../db/index');
 const authController = require('./authController');
+const tradeController = require('./tradeController');
 
 
 const getPriceFeed = `
   SELECT *
   FROM prices
+  ORDER BY datetime desc
+  LIMIT 50
 `;
 
+// CURRENT PRICE FEED END POINT
 router.use('/test', (req, res) => {
   console.log('hello from api router');
   db.query(getPriceFeed, [], (err, prices) => {
@@ -18,6 +22,23 @@ router.use('/test', (req, res) => {
     return res.json(prices.rows);
   });
 });
+
+
+// insert trade record
+// update portfolio record
+// get new portfolio
+router.post('/trade',
+  tradeController.insertTrade,
+  tradeController.updatePortfolio,
+  authController.getPortfolio,
+  (req, res) => {
+  // sends back updated user portfolio
+    console.log('hello from final buyorder middleware');
+    return res.send({
+      portfolio: res.locals.portfolio[0],
+      userLoggedIn: req.body.username,
+    });
+  });
 
 // Serve this page upon successful login
 // Middleware chain should authenticate user
@@ -31,8 +52,12 @@ router.post('/authLogin',
   authController.getPortfolio,
   (req, res) => {
     console.log('hello from login final callback');
+    console.log(req.body.username);
     // console.log('body of login request: ', req.body);
-    return res.send({ portfolio: res.locals.portfolio[0] });
+    return res.send({
+      portfolio: res.locals.portfolio[0],
+      userLoggedIn: req.body.username,
+    });
   });
 
 // (1) confirm user does not already exist in database, otherwise prompt user
@@ -48,7 +73,10 @@ router.post('/authRegister',
     console.log('hello from register final callback');
     // console.log('body of register request: ', req.body);
     // console.log('user portfolio: ', res.locals.portfolio[0]);
-    return res.send({ portfolio: res.locals.portfolio[0] });
+    return res.send({
+      portfolio: res.locals.portfolio[0],
+      userLoggedIn: req.body.username,
+    });
   });
 
 module.exports = router;
