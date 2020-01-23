@@ -4,6 +4,8 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Moment from 'moment';
 
+// import WebSocket from 'ws';
+
 import Login from './components/login.jsx';
 import Portfolio from './components/portfolio.jsx';
 import Feed from './components/feed.jsx';
@@ -20,6 +22,9 @@ class App extends Component {
       errorMsg: '',
       portfolio: {},
       userLoggedIn: '',
+      ticker: 0,
+      tickerTime: '',
+      priorTicker: 0,
     };
     this.getPriceFeed = this.getPriceFeed.bind(this);
     this.login = this.login.bind(this);
@@ -29,22 +34,56 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch('/api/prices')
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        this.setState({
-          feed: data.map((datapoint) => {
-            const { datetime, price, pair } = datapoint;
-            return {
-              datetime,
-              price: Number(price),
-              pair,
-            };
-          }),
-        });
-      })
-      .catch((err) => console.log(err));
+    // setInterval(() => {
+    //   fetch('/api/prices')
+    //     .then((res) => res.json())
+    //     .then((data) => {
+    //       console.log(data);
+    //       this.setState({
+    //         feed: data.map((datapoint) => {
+    //           const { datetime, price, pair } = datapoint;
+    //           return {
+    //             datetime,
+    //             price: Number(price),
+    //             pair,
+    //           };
+    //         }),
+    //       });
+    //     })
+    //     .catch((err) => console.log(err));
+    // }, 4000);
+    const ws = new WebSocket('wss://ws-feed.pro.coinbase.com');
+    ws.onopen = () => {
+      const subscription = {
+        type: 'subscribe',
+        product_ids: [
+          'BTC-USD',
+        ],
+        channels: [
+          {
+            name: 'ticker',
+            product_ids: [
+              'BTC-USD',
+            ],
+          },
+        ],
+      };
+      ws.send(JSON.stringify(subscription));
+    };
+
+    ws.onmessage = (msg) => {
+      const parsedData = JSON.parse(msg.data);
+      console.log(parsedData.price);
+      console.log(parsedData.time);
+      const { ticker } = this.state;
+      this.setState({
+        priorTicker: ticker,
+        ticker: parsedData.price,
+        datetime: parsedData.time,
+      });
+    };
+
+    setTimeout(() => ws.close(), 1000);
   }
 
   getPriceFeed(e) {
@@ -76,16 +115,17 @@ class App extends Component {
     const amt = Number(document.querySelector('#tradeAmt').value);
     const pair = document.querySelector('#dropdown').value;
     const { usd_balance, btc_balance } = this.state.portfolio;
-    const { price, datetime } = this.state.feed[0];
-    const { userLoggedIn } = this.state;
-    const spot = price;
-    const lastSpotDate = new Moment(datetime);
+    // const { datetime } = this.state.feed[0];
+    const { userLoggedIn, ticker } = this.state;
+    const spot = ticker;
+    // const lastSpotDate = new Moment(datetime);
 
     // handle if spot hasn't be updated in 30 seconds
-    if ((Date.now() - lastSpotDate) > 30000) {
-      alert('Must update price before making a trade');
-      return; // END FUNCTION IF PRICE ISN'T RECENTLY UPDATED
-    }
+    // not needed with websocket
+    // if ((Date.now() - lastSpotDate) > 30000) {
+    //   alert('Must update price before making a trade');
+    //   return; // END FUNCTION IF PRICE ISN'T RECENTLY UPDATED
+    // }
 
     // handle if insufficient funds
     if ((amt * spot) > usd_balance) {
@@ -126,16 +166,17 @@ class App extends Component {
     const amt = Number(document.querySelector('#tradeAmt').value);
     const pair = document.querySelector('#dropdown').value;
     const { usd_balance, btc_balance } = this.state.portfolio;
-    const { price, datetime } = this.state.feed[0];
-    const { userLoggedIn } = this.state;
-    const spot = price;
-    const lastSpotDate = new Moment(datetime);
+    // const { datetime } = this.state.feed[0];
+    const { userLoggedIn, ticker } = this.state;
+    const spot = ticker;
+    // const lastSpotDate = new Moment(datetime);
 
     // handle if spot hasn't be updated in 30 seconds
-    if ((Date.now() - lastSpotDate) > 30000) {
-      alert('Must update price before making a trade');
-      return; // END FUNCTION IF PRICE ISN'T RECENTLY UPDATED
-    }
+    // not needed with websocket
+    // if ((Date.now() - lastSpotDate) > 30000) {
+    //   alert('Must update price before making a trade');
+    //   return; // END FUNCTION IF PRICE ISN'T RECENTLY UPDATED
+    // }
 
     // handle if insufficient funds
     if (amt > btc_balance) {
@@ -238,13 +279,13 @@ class App extends Component {
 
   render() {
     const {
-      feed, errorMsg, portfolio, userLoggedIn,
+      feed, errorMsg, portfolio, userLoggedIn, ticker, priorTicker, datetime,
     } = this.state;
     return (
       <div>
         <Login login={this.login} register={this.register} errorMsg={errorMsg} />
         <Portfolio portfolio={portfolio} userLoggedIn={userLoggedIn} buy={this.buy} sell={this.sell} />
-        <Feed getPriceFeed={this.getPriceFeed} feed={feed} />
+        <Feed getPriceFeed={this.getPriceFeed} feed={feed} ticker={ticker} priorTicker={priorTicker} datetime={datetime} />
       </div>
     );
   }

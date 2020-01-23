@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const WebSocket = require('ws');
 
 const receiver = require('./receiver');
 const apiRouter = require('./apiRouter');
@@ -8,6 +9,33 @@ const apiRouter = require('./apiRouter');
 const app = express();
 
 const PORT = 3000;
+
+const ws = new WebSocket('wss://ws-feed.pro.coinbase.com');
+
+// ws.on('open', () => {
+
+//   const subscription = {
+//     type: 'subscribe',
+//     product_ids: [
+//       'BTC-USD',
+//     ],
+//     channels: [
+//       {
+//         name: 'ticker',
+//         product_ids: [
+//           'BTC-USD',
+//         ],
+//       },
+//     ],
+//   };
+//   ws.send(JSON.stringify(subscription));
+// });
+
+// ws.on('message', (msg) => {
+//   console.log(msg);
+// });
+
+console.log('THE WEBSOCKET IS', ws);
 
 // Test this
 // app.use(express.static(path.resolve(__dirname, '/public')));

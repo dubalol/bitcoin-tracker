@@ -10,6 +10,12 @@ body {
   text-align: center;
 }
 
+img {
+  max-width: 25px;
+  padding: 10px;
+  filter: brightness(2);
+}
+
 #loginDiv {
   width: 100%;
 }
@@ -19,8 +25,11 @@ body {
   border: 1px solid white;
 }
 
-#feedDiv {
-  width: 100%;
+#feedDiv div {
+  /* width: 100%; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .loginForm {
@@ -55,6 +64,7 @@ input {
 
 #getprices {
   width: 100%;
+  margin-top: 25px;
 }
 
 li {
