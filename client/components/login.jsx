@@ -10,16 +10,22 @@ class Login extends Component {
   render() {
     const { login, register, errorMsg } = this.props;
     return (
-      <div>
+      <div id="loginDiv">
         <form className="loginForm">
-          <input type="text" id="username" placeholder="Username" />
-          <input type="text" id="password" placeholder="Password" />
-          <div>
-            <input type="submit" id="login" value="Log In" onClick={login} />
-            <input type="button" id="register" value="Register" onClick={register} />
-            <input type="button" id="forgot" value="Forgot?" />
+          <input className="inputText" type="text" id="username" placeholder="Username" />
+          <input className="inputText" type="password" id="password" placeholder="Password" />
+          <div id="regAuth">
+            <div>
+              <input className="inputbutton" type="submit" id="login" value="Log In" onClick={login} />
+            </div>
+            <div>
+              <input className="inputbutton" type="button" id="register" value="Register" onClick={register} />
+            </div>
+            <div>
+              <input className="inputbutton" type="button" id="forgot" value="Forgot?" />
+            </div>
           </div>
-          <input type="button" id="github" value="Log In With Github" />
+          <input className="inputbutton" type="button" id="github" value="Log In With Github" />
         </form>
         <h5>{errorMsg}</h5>
       </div>

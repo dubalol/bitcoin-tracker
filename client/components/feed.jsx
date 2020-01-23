@@ -13,6 +13,13 @@ class Feed extends Component {
     // somehow render only a specific subset of pricefeed
     // iterate through feed and build price history
     // SHOW CURRENT VALUE OF PORTFOLIO
+
+    const ticker = [];
+    if (feed.length > 0) {
+      ticker.push(<h3>{'Current Price'}</h3>)
+      ticker.push(<h3>{`${feed[0].pair}: ${feed[0].price.toFixed(2)}`}</h3>);
+    }
+
     const historyBTC = [];
     feed.forEach((datapoint) => {
       const { datetime, price, pair } = datapoint;
@@ -23,8 +30,9 @@ class Feed extends Component {
     });
 
     return (
-      <div>
-        <button type="submit" onClick={getPriceFeed}>GetPrices</button>
+      <div id="feedDiv">
+        {ticker}
+        <input className="inputbutton" id="getprices" type="submit" onClick={getPriceFeed} value="Get Latest Price" />
         <ul>{historyBTC}</ul>
       </div>
     );

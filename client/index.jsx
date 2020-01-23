@@ -28,6 +28,25 @@ class App extends Component {
     this.sell = this.sell.bind(this);
   }
 
+  componentDidMount() {
+    fetch('/api/prices')
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        this.setState({
+          feed: data.map((datapoint) => {
+            const { datetime, price, pair } = datapoint;
+            return {
+              datetime,
+              price: Number(price),
+              pair,
+            };
+          }),
+        });
+      })
+      .catch((err) => console.log(err));
+  }
+
   getPriceFeed(e) {
     e.preventDefault();
 
