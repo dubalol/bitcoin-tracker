@@ -25,14 +25,14 @@ class Feed extends Component {
       const { datetime, price, pair } = datapoint;
       const timestamp = new Moment(datetime);
       historyBTC.push(
-        <li>{`Time: ${timestamp.format('h:mm:ss')} | Price: ${price.toFixed(2)} | ${pair}`}</li>,
+        <li>{`Time: ${timestamp.format('h:mm:ss')} | Price: $${price.toFixed(2)} | ${pair}`}</li>,
       );
     });
 
     const delta = ticker - priorTicker;
     // const deltaSign = delta > 0 ? '+' : '-';
     const deltaImg = delta > 0 ? '/client/assets/green.png' : '/client/assets/red.png';
-    const formattedTicker = Number(ticker).toFixed(2);
+    const formattedTicker = Number(ticker).toFixed(2).toLocaleString();
     // console.log(typeof ticker);
     const time = new Moment(datetime);
 
@@ -41,7 +41,7 @@ class Feed extends Component {
         <p>Current Price</p>
         <div>
           <span>{`${time.format('h:mm:ss A')}`}</span>
-          <span>{`${formattedTicker}`}</span>
+          <span>{`$${formattedTicker}`}</span>
           <img src={deltaImg} alt="hello" />
         </div>
         <input className="inputbutton" id="getprices" type="submit" onClick={getPriceFeed} value="Get Price History" />

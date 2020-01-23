@@ -23,6 +23,10 @@ module.exports = {
         // style-loader loads into style tag in HTML
         use: ['style-loader', 'css-loader'],
       },
+      {
+        test: /\.(png|jpe?g|gif)$/,
+        loader: 'file-loader',
+      },
     ],
   },
   devServer: {
@@ -34,6 +38,7 @@ module.exports = {
     },
   },
   mode: process.env.NODE_ENV,
+  // This and file-loader does NOT solve production build PNGs
   performance: {
     hints: false,
     maxEntrypointSize: 512000,
