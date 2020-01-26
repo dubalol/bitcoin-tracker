@@ -1,0 +1,84 @@
+body {
+  /* background-color: #ffffff; */
+  background-color: #3052F0;
+  /* background-color:  #E27293; */
+  color: #ffffff;
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+img {
+  max-width: 25px;
+  padding: 10px;
+  filter: brightness(2);
+}
+
+#loginDiv {
+  width: 100%;
+}
+
+#portfolioDiv {
+  width: 100%;
+  border: 1px solid white;
+  border-radius: 3px;
+  box-shadow: 1px 1px 2px;
+}
+
+#feedDiv div {
+  /* width: 100%; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
+  border-radius: 3px;
+  border: 1px solid white;
+  box-shadow: 1px 1px 2px;
+}
+
+.inputButton {
+  background-color: #3052F0;
+  color: white;
+}
+
+.inputText {
+  border: 1px solid rgb(151, 151, 151);
+}
+
+#regAuth {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+#regAuth div {
+  display: flex;
+  padding: 5px;
+}
+
+#getprices {
+  width: 100%;
+  margin-top: 25px;
+}
+
+li {
+  font-size: 8;
+  width: 160px;
+}
+
+select {
+  background-color: #3052F0;
+  color: white;
+  border-radius: 3px;
+  border: 1px solid white;
+
+}
