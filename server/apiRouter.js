@@ -16,7 +16,6 @@ const getPriceFeed = `
 
 // CURRENT PRICE FEED END POINT
 router.use('/prices', (req, res) => {
-  console.log('hello from api router');
   db.query(getPriceFeed, [], (err, prices) => {
     if (err) console.log(err);
     return res.json(prices.rows);
@@ -24,16 +23,14 @@ router.use('/prices', (req, res) => {
 });
 
 
-// insert trade record
-// update portfolio record
-// get new portfolio
+// Insert trade record
+// Update portfolio record
+// Get and send new portfolio
 router.post('/trade',
   tradeController.insertTrade,
   tradeController.updatePortfolio,
   authController.getPortfolio,
   (req, res) => {
-  // sends back updated user portfolio
-    console.log('hello from final buyorder middleware');
     return res.send({
       portfolio: res.locals.portfolio[0],
       userLoggedIn: req.body.username,
@@ -51,9 +48,6 @@ router.post('/authLogin',
   authController.compareHash,
   authController.getPortfolio,
   (req, res) => {
-    console.log('hello from login final callback');
-    console.log(req.body.username);
-    // console.log('body of login request: ', req.body);
     return res.send({
       portfolio: res.locals.portfolio[0],
       userLoggedIn: req.body.username,
@@ -70,9 +64,6 @@ router.post('/authRegister',
   authController.createUserRecord,
   authController.getPortfolio,
   (req, res) => {
-    console.log('hello from register final callback');
-    // console.log('body of register request: ', req.body);
-    // console.log('user portfolio: ', res.locals.portfolio[0]);
     return res.send({
       portfolio: res.locals.portfolio[0],
       userLoggedIn: req.body.username,
