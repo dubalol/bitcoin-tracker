@@ -4,8 +4,6 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Moment from 'moment';
 
-// import WebSocket from 'ws';
-
 import Login from './components/login.jsx';
 import Portfolio from './components/portfolio.jsx';
 import Feed from './components/feed.jsx';
@@ -16,8 +14,6 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      // user portfolio information
-      // price feed data points
       feed: [],
       errorMsg: '',
       portfolio: {},
@@ -34,33 +30,12 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // setInterval(() => {
-    //   fetch('/api/prices')
-    //     .then((res) => res.json())
-    //     .then((data) => {
-    //       console.log(data);
-    //       this.setState({
-    //         feed: data.map((datapoint) => {
-    //           const { datetime, price, pair } = datapoint;
-    //           return {
-    //             datetime,
-    //             price: Number(price),
-    //             pair,
-    //           };
-    //         }),
-    //       });
-    //     })
-    //     .catch((err) => console.log(err));
-    // }, 4000);
-
     // CONNECTION TO WEBSOCKET SERVER
     const ws2 = new WebSocket('ws://localhost:3000');
     ws2.onopen = () => {
-      console.log('ws2 opened');
       ws2.send('hello world');
     };
     ws2.onmessage = (msg) => {
-      console.log('from client: ', JSON.parse(msg.data));
       const { ticker } = this.state;
       const { price, time } = JSON.parse(msg.data);
       this.setState({
@@ -69,40 +44,6 @@ class App extends Component {
         datetime: time,
       });
     };
-
-    // const ws = new WebSocket('wss://ws-feed.pro.coinbase.com');
-    // console.log(ws);
-    // ws.onopen = () => {
-    //   const subscription = {
-    //     type: 'subscribe',
-    //     product_ids: [
-    //       'BTC-USD',
-    //     ],
-    //     channels: [
-    //       {
-    //         name: 'ticker',
-    //         product_ids: [
-    //           'BTC-USD',
-    //         ],
-    //       },
-    //     ],
-    //   };
-    //   ws.send(JSON.stringify(subscription));
-    // };
-
-    // ws.onmessage = (msg) => {
-    //   const parsedData = JSON.parse(msg.data);
-    //   console.log(parsedData.price);
-    //   console.log(parsedData.time);
-    //   const { ticker } = this.state;
-    //   this.setState({
-    //     priorTicker: ticker,
-    //     ticker: parsedData.price,
-    //     datetime: parsedData.time,
-    //   });
-    // };
-
-    // setTimeout(() => ws.close(), 30000);
   }
 
   getPriceFeed(e) {
@@ -111,7 +52,6 @@ class App extends Component {
     fetch('/api/prices')
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         this.setState({
           feed: data.map((datapoint) => {
             const { datetime, price, pair } = datapoint;
@@ -125,32 +65,21 @@ class App extends Component {
       })
       .catch((err) => console.log(err));
   }
-
+  
+  // Get user input (amount), Post to server, Get back updated portfolio
   buy(e) {
     e.preventDefault();
-    // get trade amount in input box
-    // post to server with pair, amount, and username
-    // get back updated portfolio
+    
     const amt = Number(document.querySelector('#tradeAmt').value);
     const pair = document.querySelector('#dropdown').value;
     const { usd_balance, btc_balance } = this.state.portfolio;
-    // const { datetime } = this.state.feed[0];
     const { userLoggedIn, ticker } = this.state;
     const spot = ticker;
-    // const lastSpotDate = new Moment(datetime);
 
-    // handle if spot hasn't be updated in 30 seconds
-    // not needed with websocket
-    // if ((Date.now() - lastSpotDate) > 30000) {
-    //   alert('Must update price before making a trade');
-    //   return; // END FUNCTION IF PRICE ISN'T RECENTLY UPDATED
-    // }
-
-    // handle if insufficient funds
+    // Handle if insufficient funds
     if ((amt * spot) > usd_balance) {
       alert('Insufficient funds');
     } else if ((amt * spot) <= usd_balance) {
-      // make post request to server with amt, pair, username
       const buyData = {
         username: userLoggedIn,
         rate: spot,
@@ -185,23 +114,13 @@ class App extends Component {
     const amt = Number(document.querySelector('#tradeAmt').value);
     const pair = document.querySelector('#dropdown').value;
     const { usd_balance, btc_balance } = this.state.portfolio;
-    // const { datetime } = this.state.feed[0];
     const { userLoggedIn, ticker } = this.state;
     const spot = ticker;
-    // const lastSpotDate = new Moment(datetime);
 
-    // handle if spot hasn't be updated in 30 seconds
-    // not needed with websocket
-    // if ((Date.now() - lastSpotDate) > 30000) {
-    //   alert('Must update price before making a trade');
-    //   return; // END FUNCTION IF PRICE ISN'T RECENTLY UPDATED
-    // }
-
-    // handle if insufficient funds
+    // Handle if insufficient funds
     if (amt > btc_balance) {
       alert('Insufficient funds');
     } else if (amt <= btc_balance) {
-      // make post request to server with amt, pair, username
       const sellData = {
         username: userLoggedIn,
         rate: spot,
@@ -249,7 +168,7 @@ class App extends Component {
       .then((res) => res.json())
       .then((data) => {
         if (data.msg) this.setState({ errorMsg: data.msg });
-        console.log(data);
+      
         if (data.portfolio) {
           this.setState({
             portfolio: data.portfolio,
@@ -260,8 +179,6 @@ class App extends Component {
         return data;
       })
       .catch((err) => console.log(err));
-
-    // this.setState({});
   }
 
   register(e) {
@@ -292,8 +209,6 @@ class App extends Component {
         return data;
       })
       .catch((err) => console.log(err));
-
-    // this.setState({});
   }
 
   render() {
