@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Moment from 'moment';
 
+// Shows price feed
+// Eventually to show graph using datapoints in historyBTC
 class Feed extends Component {
   constructor() {
     super();
@@ -9,18 +11,8 @@ class Feed extends Component {
 
   render() {
     const { getPriceFeed, feed, ticker, priorTicker, datetime } = this.props;
-
-    // somehow render only a specific subset of pricefeed
-    // iterate through feed and build price history
-    // SHOW CURRENT VALUE OF PORTFOLIO
-
-    // const ticker = [];
-    // if (feed.length > 0) {
-    //   ticker.push(<h3>{'Current Price'}</h3>)
-    //   ticker.push(<h3>{`${feed[0].pair}: ${feed[0].price.toFixed(2)}`}</h3>);
-    // }
-
     const historyBTC = [];
+    
     feed.forEach((datapoint) => {
       const { datetime, price, pair } = datapoint;
       const timestamp = new Moment(datetime);
@@ -33,7 +25,6 @@ class Feed extends Component {
     // const deltaSign = delta > 0 ? '+' : '-';
     const deltaImg = delta > 0 ? '/client/assets/green.png' : '/client/assets/red.png';
     const formattedTicker = Number(ticker).toFixed(2).toLocaleString();
-    // console.log(typeof ticker);
     const time = new Moment(datetime);
 
     return (
